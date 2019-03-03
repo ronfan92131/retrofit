@@ -1,0 +1,57 @@
+retrofit readme
+
+1. retrofit plugin integration abc:
+   a. add permission for internet (AndroidManifest.xml):
+        <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+   b. Simplified ui layout (activity_main.xml): textview wrapped in "NestedScrollView"
+       <android.support.v4.widget.NestedScrollView
+           <TextView
+                     />
+       </android.support.v4.widget.NestedScrollView>
+
+   c. update build.gradle (Module:app)
+           implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+
+   d. MainActitivy source code, import retrofit and create a new retrofit object.
+
+   e. retrofit code:
+       input: url (RESTful)
+       output: List of jsonObject
+       post-process: convert to text and append to textView
+       private void getComments() {
+           Call<List<Comment>> call = jsonPlaceHolderApi.getComments(url);
+           call.enqueue(new Callback<List<Comment>>() {
+               @Override
+               public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                   if (!response.isSuccessful()) {
+                       Log.d(TAG, "response not successful");
+                       textViewResult.setText("Code: " + response.code());
+                       return;
+                   }
+
+                   List<Comment> comments = response.body();
+                   for (Comment comment : comments) {
+                       String content = "";
+                       textViewResult.append(content);
+                   }
+               }
+
+               @Override
+               public void onFailure(Call<List<Comment>> call, Throwable t) {
+                   textViewResult.setText(t.getMessage());
+               }
+           });
+       }
+
+2. retrofit references:
+   official github site:  https://square.github.io/retrofit/
+   and its linke to gson site:  https://github.com/google/gson
+   - check the latest retrofit and gson version and add dependencies to build.gradel (module:app)
+    'com.squareup.retrofit2:retrofit:2.5.0'
+    'com.squareup.retrofit2:converter-gson:2.8.5'
+3. some online json files, such as:
+    https://jsonplaceholder.typicode.com/posts
+4. create a new JAVA class "Post"
+
+
